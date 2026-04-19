@@ -22,6 +22,21 @@
     <meta property="og:title" content="yous.ee | Advanced URL Shortener">
     <meta property="og:description" content="Fast, secure, and modern URL shortener.">
     
+    <!-- ======================================================= -->
+    <!-- 页面追踪代码 (Analytics Tracking Code)                     -->
+    <!-- 说明: 取消下方注释，并将 'G-XXXXXXXXXX' 替换为您的实际 ID -->
+    <!-- ======================================================= -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
+    
     <!-- Fonts: Inter (Fashion/Clean) + Fira Code (Hacker/Tech) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -526,7 +541,7 @@
 
         // 7. Clipboard Logic
         copyBtn.addEventListener('click', async () => {
-            const textToCopy = shortenedUrlEl.textContent;
+            const textToCopy = "https://yous.ee";
             
             try {
                 // Use modern Clipboard API

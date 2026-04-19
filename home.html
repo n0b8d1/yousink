@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & Meta Tags -->
+    <title data-i18n="title">yous.ee | Advanced URL Shortener</title>
+    
+    <!-- Safe Base64 Inline SVG Favicon (Fixed Parsing Issue) -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTIiIGZpbGw9IiMwNTA1MDUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMzIiIGZpbGw9IiMwMGZmNDEiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4mZ3Q7XzwvdGV4dD48L3N2Zz4=" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTIiIGZpbGw9IiMwNTA1MDUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMzIiIGZpbGw9IiMwMGZmNDEiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4mZ3Q7XzwvdGV4dD48L3N2Zz4=">
+
+    <meta name="description" content="yous.ee is a fast, secure, and modern URL shortener. Create short links instantly with our hacker-grade platform." data-i18n-attr="description|meta-desc">
+    <meta name="keywords" content="url shortener, short links, yous.ee, link management, hacker aesthetic">
+    <meta name="author" content="yous.ee">
+    <link rel="canonical" href="https://yous.ee/">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yous.ee/">
+    <meta property="og:title" content="yous.ee | Advanced URL Shortener">
+    <meta property="og:description" content="Fast, secure, and modern URL shortener.">
+    
+    <!-- Fonts: Inter (Fashion/Clean) + Fira Code (Hacker/Tech) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (CDN for single file requirement) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons (Switched to jsdelivr for better global/CN stability) -->
+    <script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            black: '#050505',
+                            dark: '#111111',
+                            green: '#00ff41', // Classic Matrix/Hacker Green
+                            greenDark: '#00cc33'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'blink': 'blink 1s step-end infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for inputs and scrollbars */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(17, 17, 17, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+            border-color: rgba(0, 255, 65, 0.5);
+            outline: none;
+        }
+
+        /* Glitch effect on hover for the logo */
+        .glitch-hover:hover {
+            text-shadow: 2px 0 #00ff41, -2px 0 #ff003c;
+            transition: text-shadow 0.2s ease-in-out;
+        }
+
+        /* Minimalist Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ff41;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans selection:bg-cyber-green selection:text-black">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-mono font-bold tracking-tighter text-white glitch-hover flex items-center gap-2">
+                <i class="ph-fill ph-terminal-window text-cyber-green"></i>
+                yous.ee
+            </a>
+            
+            <!-- Language Selector -->
+            <div class="relative group">
+                <select id="lang-selector" class="appearance-none bg-transparent font-mono text-sm border border-white/20 rounded px-4 py-2 pr-8 hover:border-cyber-green focus:outline-none focus:border-cyber-green transition-colors cursor-pointer text-white">
+                    <option value="en" class="bg-cyber-dark text-white">EN - English</option>
+                    <option value="zh-CN" class="bg-cyber-dark text-white">简 - 简体中文</option>
+                    <option value="zh-TW" class="bg-cyber-dark text-white">繁 - 繁體中文</option>
+                    <option value="ja" class="bg-cyber-dark text-white">日 - 日本語</option>
+                    <option value="es" class="bg-cyber-dark text-white">ES - Español</option>
+                    <option value="fr" class="bg-cyber-dark text-white">FR - Français</option>
+                    <option value="de" class="bg-cyber-dark text-white">DE - Deutsch</option>
+                </select>
+                <i class="ph ph-caret-down absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/50"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-32 pb-20 px-6 relative flex flex-col justify-center">
+        <!-- Background decorative elements -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyber-green/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-3xl mx-auto w-full relative z-10 text-center">
+            
+            <!-- Hero Typography -->
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6" data-i18n="hero-title">
+                Shrink the Web.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 font-mono mb-12 max-w-2xl mx-auto" data-i18n="hero-subtitle">
+                > Initialize secure, edge-routed URL compression. No bloat. Just speed.
+            </p>
+
+            <!-- Input Area -->
+            <div class="glass-panel p-2 md:p-4 rounded-xl flex flex-col md:flex-row gap-4 mb-8 shadow-2xl relative overflow-hidden">
+                <!-- Subtle top border highlight -->
+                <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyber-green/50 to-transparent"></div>
+                
+                <div class="relative flex-grow flex items-center">
+                    <i class="ph ph-link absolute left-4 text-gray-500 text-xl"></i>
+                    <input type="url" id="url-input" class="w-full bg-cyber-black text-white font-mono text-base md:text-lg rounded-lg pl-12 pr-4 py-4 border border-white/10 input-glow transition-all placeholder-gray-600" placeholder="https://your-long-url.com/goes/here" required autocomplete="off">
+                </div>
+                
+                <button id="shorten-btn" class="bg-white text-black hover:bg-cyber-green hover:text-black font-mono font-bold px-8 py-4 rounded-lg transition-all flex items-center justify-center gap-2 group">
+                    <span id="btn-text" data-i18n="btn-shorten">EXECUTE</span>
+                    <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+
+            <!-- Terminal Output / Result Area (Hidden by default) -->
+            <div id="result-area" class="hidden text-left bg-[#0a0a0a] border border-cyber-green/30 rounded-lg p-6 relative">
+                <div class="absolute top-0 left-0 w-full h-8 bg-white/5 border-b border-cyber-green/20 rounded-t-lg flex items-center px-4 gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                    <div class="w-3 h-3 rounded-full bg-cyber-green"></div>
+                    <span class="text-xs font-mono text-gray-500 ml-2">yous.ee_terminal_v1.0</span>
+                </div>
+                
+                <div class="mt-8 font-mono">
+                    <p class="text-gray-400 text-sm mb-2" data-i18n="result-status">System response:</p>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-black/50 p-4 rounded border border-white/5">
+                        <a href="#" id="shortened-url" class="text-cyber-green text-xl sm:text-2xl break-all hover:underline" target="_blank">https://yous.ee/xxx</a>
+                        <button id="copy-btn" class="shrink-0 border border-cyber-green text-cyber-green hover:bg-cyber-green hover:text-black px-4 py-2 rounded text-sm transition-colors flex items-center gap-2">
+                            <i class="ph ph-copy"></i>
+                            <span data-i18n="btn-copy">COPY</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State (Hidden) -->
+            <div id="loading-area" class="hidden mt-8 font-mono text-cyber-green flex items-center justify-center gap-2">
+                <i class="ph ph-circle-notch animate-spin text-2xl"></i>
+                <span data-i18n="processing">Processing algorithms...</span>
+            </div>
+
+        </div>
+
+        <!-- Features Grid -->
+        <div class="max-w-5xl mx-auto w-full mt-32 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="glass-panel p-8 rounded-xl border border-white/5 hover:border-white/20 transition-colors group">
+                <i class="ph ph-shield-check text-4xl text-gray-500 group-hover:text-cyber-green transition-colors mb-4"></i>
+                <h3 class="text-xl font-bold mb-2" data-i18n="feat-1-title">Encrypted Logic</h3>
+                <p class="text-gray-400 text-sm" data-i18n="feat-1-desc">Bank-grade security. URLs are sanitized and protected against malicious intent.</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="glass-panel p-8 rounded-xl border border-white/5 hover:border-white/20 transition-colors group">
+                <i class="ph ph-lightning text-4xl text-gray-500 group-hover:text-cyber-green transition-colors mb-4"></i>
+                <h3 class="text-xl font-bold mb-2" data-i18n="feat-2-title">Zero Latency</h3>
+                <p class="text-gray-400 text-sm" data-i18n="feat-2-desc">Edge-network routing ensures redirects happen in milliseconds globally.</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="glass-panel p-8 rounded-xl border border-white/5 hover:border-white/20 transition-colors group">
+                <i class="ph ph-ghost text-4xl text-gray-500 group-hover:text-cyber-green transition-colors mb-4"></i>
+                <h3 class="text-xl font-bold mb-2" data-i18n="feat-3-title">Anonymous Mode</h3>
+                <p class="text-gray-400 text-sm" data-i18n="feat-3-desc">No invasive tracking pixels. We respect your data and digital privacy.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 glass-panel mt-auto">
+        <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-sm text-gray-500">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyber-green animate-pulse"></span>
+                <span data-i18n="footer-status">System Online. All protocols nominal.</span>
+            </div>
+            <div>
+                &copy; <span id="year"></span> yous.ee. <span data-i18n="footer-rights">All rights reserved.</span>
+            </div>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-cyber-green transition-colors">API</a>
+                <a href="#" class="hover:text-cyber-green transition-colors" data-i18n="footer-terms">Terms</a>
+                <a href="#" class="hover:text-cyber-green transition-colors" data-i18n="footer-privacy">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- i18n & Application Logic -->
+    <script>
+        // 1. Dictionaries for 7 Languages
+        const translations = {
+            'en': {
+                'title': 'yous.ee | Advanced URL Shortener',
+                'meta-desc': 'yous.ee is a fast, secure, and modern URL shortener. Create short links instantly.',
+                'hero-title': 'Share what <span class="text-cyber-green">yous.ee</span>',
+                'hero-subtitle': '> yous.ee = "you see". Secure, edge-routed URL compression. Let the world see your vision instantly.',
+                'btn-shorten': 'EXECUTE',
+                'processing': 'Processing algorithms...',
+                'result-status': '> System response: Link generated successfully.',
+                'btn-copy': 'COPY',
+                'btn-copied': 'COPIED!',
+                'feat-1-title': 'Encrypted Logic',
+                'feat-1-desc': 'Bank-grade security. URLs are sanitized and protected against malicious intent.',
+                'feat-2-title': 'Zero Latency',
+                'feat-2-desc': 'Edge-network routing ensures redirects happen in milliseconds globally.',
+                'feat-3-title': 'Anonymous Mode',
+                'feat-3-desc': 'No invasive tracking pixels. We respect your data and digital privacy.',
+                'footer-status': 'System Online. All protocols nominal.',
+                'footer-rights': 'All rights reserved.',
+                'footer-terms': 'Terms',
+                'footer-privacy': 'Privacy',
+                'input-placeholder': 'https://your-long-url.com/goes/here'
+            },
+            'zh-CN': {
+                'title': 'yous.ee | 高级网址缩短服务',
+                'meta-desc': 'yous.ee 是一个快速、安全、现代的短网址生成器。采用极客级平台，瞬间生成短链接。',
+                'hero-title': '分享你所见 <span class="text-cyber-green font-mono">yous.ee</span>',
+                'hero-subtitle': '> yous.ee 寓意 "you see"。安全、极速的边缘路由网址压缩，让世界瞬间看见你的“视界”。',
+                'btn-shorten': '执行压缩',
+                'processing': '算法处理中...',
+                'result-status': '> 系统响应: 链接生成成功。',
+                'btn-copy': '复制',
+                'btn-copied': '已复制!',
+                'feat-1-title': '加密逻辑',
+                'feat-1-desc': '银行级安全标准。所有网址均经过清洗，有效防御恶意威胁。',
+                'feat-2-title': '零延迟',
+                'feat-2-desc': '全球边缘网络节点路由，确保毫秒级重定向响应。',
+                'feat-3-title': '匿名模式',
+                'feat-3-desc': '无侵入式追踪代码。我们绝对尊重您的数据与数字隐私。',
+                'footer-status': '系统在线。各项协议运行正常。',
+                'footer-rights': '保留所有权利。',
+                'footer-terms': '服务条款',
+                'footer-privacy': '隐私政策',
+                'input-placeholder': '在此输入您的长网址...'
+            },
+            'zh-TW': {
+                'title': 'yous.ee | 進階網址縮短服務',
+                'meta-desc': 'yous.ee 是一個快速、安全、現代的短網址生成器。採用駭客級平台，瞬間生成短連結。',
+                'hero-title': '分享你所見 <span class="text-cyber-green font-mono">yous.ee</span>',
+                'hero-subtitle': '> yous.ee 寓意 "you see"。安全、極速的邊緣路由網址壓縮，讓世界瞬間看見你的「視界」。',
+                'btn-shorten': '執行壓縮',
+                'processing': '演算法處理中...',
+                'result-status': '> 系統回應: 連結生成成功。',
+                'btn-copy': '複製',
+                'btn-copied': '已複製!',
+                'feat-1-title': '加密邏輯',
+                'feat-1-desc': '銀行級安全標準。所有網址均經過清洗，有效防禦惡意威脅。',
+                'feat-2-title': '零延遲',
+                'feat-2-desc': '全球邊緣網路節點路由，確保毫秒級重定向回應。',
+                'feat-3-title': '匿名模式',
+                'feat-3-desc': '無侵入式追蹤代碼。我們絕對尊重您的數據與數位隱私。',
+                'footer-status': '系統上線。各項協定運作正常。',
+                'footer-rights': '保留所有權利。',
+                'footer-terms': '服務條款',
+                'footer-privacy': '隱私政策',
+                'input-placeholder': '在此輸入您的長網址...'
+            },
+            'ja': {
+                'title': 'yous.ee | 高度なURL短縮サービス',
+                'meta-desc': 'yous.eeは高速、安全、モダンなURL短縮ツールです。ハッカーレベルのプラットフォームで短縮リンクを瞬時に作成します。',
+                'hero-title': 'あなたの「視界」を共有する <span class="text-cyber-green font-mono">yous.ee</span>',
+                'hero-subtitle': '> yous.ee = "you see"。セキュアで超高速なURL圧縮。あなたのビジョンを瞬時に世界へ。',
+                'btn-shorten': '実行',
+                'processing': 'アルゴリズムを処理中...',
+                'result-status': '> システム応答: リンクが正常に生成されました。',
+                'btn-copy': 'コピー',
+                'btn-copied': 'コピー済!',
+                'feat-1-title': '暗号化ロジック',
+                'feat-1-desc': '銀行レベルのセキュリティ。URLは無害化され、悪意のある意図から保護されます。',
+                'feat-2-title': 'ゼロレイテンシー',
+                'feat-2-desc': 'エッジネットワークルーティングにより、世界中でミリ秒単位のリダイレクトを実現します。',
+                'feat-3-title': '匿名モード',
+                'feat-3-desc': '侵襲的なトラッキングはありません。私たちはあなたのデータとプライバシーを尊重します。',
+                'footer-status': 'システムオンライン。全プロトコル正常。',
+                'footer-rights': '無断転載を禁じます。',
+                'footer-terms': '利用規約',
+                'footer-privacy': 'プライバシー',
+                'input-placeholder': 'ここに長いURLを入力してください...'
+            },
+            'es': {
+                'title': 'yous.ee | Acortador de URL Avanzado',
+                'meta-desc': 'yous.ee es un acortador de URL rápido, seguro y moderno. Crea enlaces cortos al instante.',
+                'hero-title': 'Comparte lo que ves <span class="text-cyber-green font-mono">(yous.ee)</span>',
+                'hero-subtitle': '> yous.ee = "you see". Compresión de URL segura y ultrarrápida. Deja que el mundo vea tu visión al instante.',
+                'btn-shorten': 'EJECUTAR',
+                'processing': 'Procesando algoritmos...',
+                'result-status': '> Respuesta del sistema: Enlace generado con éxito.',
+                'btn-copy': 'COPIAR',
+                'btn-copied': '¡COPIADO!',
+                'feat-1-title': 'Lógica Encriptada',
+                'feat-1-desc': 'Seguridad de grado bancario. Las URL se desinfectan y protegen contra intenciones maliciosas.',
+                'feat-2-title': 'Latencia Cero',
+                'feat-2-desc': 'El enrutamiento de red de borde garantiza redirecciones en milisegundos a nivel mundial.',
+                'feat-3-title': 'Modo Anónimo',
+                'feat-3-desc': 'Sin píxeles de seguimiento invasivos. Respetamos sus datos y privacidad digital.',
+                'footer-status': 'Sistema en línea. Todos los protocolos nominales.',
+                'footer-rights': 'Todos los derechos reservados.',
+                'footer-terms': 'Términos',
+                'footer-privacy': 'Privacidad',
+                'input-placeholder': 'Introduce tu URL larga aquí...'
+            },
+            'fr': {
+                'title': 'yous.ee | Raccourcisseur d\'URL Avancé',
+                'meta-desc': 'yous.ee est un raccourcisseur d\'URL rapide, sécurisé et moderne. Créez des liens courts instantanément.',
+                'hero-title': 'Partagez ce que vous voyez <span class="text-cyber-green font-mono">(yous.ee)</span>',
+                'hero-subtitle': '> yous.ee = "you see". Compression d\'URL sécurisée et ultra-rapide. Laissez le monde voir votre vision instantanément.',
+                'btn-shorten': 'EXÉCUTER',
+                'processing': 'Traitement des algorithmes...',
+                'result-status': '> Réponse du système : Lien généré avec succès.',
+                'btn-copy': 'COPIER',
+                'btn-copied': 'COPIÉ !',
+                'feat-1-title': 'Logique Cryptée',
+                'feat-1-desc': 'Sécurité de niveau bancaire. Les URL sont assainies et protégées contre les intentions malveillantes.',
+                'feat-2-title': 'Zéro Latence',
+                'feat-2-desc': 'Le routage réseau périphérique garantit des redirections en quelques millisecondes.',
+                'feat-3-title': 'Mode Anonyme',
+                'feat-3-desc': 'Aucun suivi invasif. Nous respectons vos données et votre confidentialité numérique.',
+                'footer-status': 'Système en ligne. Protocoles nominaux.',
+                'footer-rights': 'Tous droits réservés.',
+                'footer-terms': 'Conditions',
+                'footer-privacy': 'Confidentialité',
+                'input-placeholder': 'Entrez votre longue URL ici...'
+            },
+            'de': {
+                'title': 'yous.ee | Erweiterter URL-Shortener',
+                'meta-desc': 'yous.ee ist ein schneller, sicherer und moderner URL-Shortener. Erstellen Sie sofort kurze Links.',
+                'hero-title': 'Teile, was du siehst <span class="text-cyber-green font-mono">(yous.ee)</span>',
+                'hero-subtitle': '> yous.ee = "you see". Sichere und ultraschnelle URL-Komprimierung. Lass die Welt deine Vision sofort sehen.',
+                'btn-shorten': 'AUSFÜHREN',
+                'processing': 'Algorithmen verarbeiten...',
+                'result-status': '> Systemantwort: Link erfolgreich generiert.',
+                'btn-copy': 'KOPIEREN',
+                'btn-copied': 'KOPIERT!',
+                'feat-1-title': 'Verschlüsselte Logik',
+                'feat-1-desc': 'Sicherheit auf Bankenniveau. URLs werden bereinigt und vor bösartigen Absichten geschützt.',
+                'feat-2-title': 'Null Latenz',
+                'feat-2-desc': 'Edge-Network-Routing gewährleistet Weiterleitungen in Millisekunden weltweit.',
+                'feat-3-title': 'Anonymer Modus',
+                'feat-3-desc': 'Keine invasiven Tracking-Pixel. Wir respektieren Ihre Daten und digitale Privatsphäre.',
+                'footer-status': 'System online. Alle Protokolle nominal.',
+                'footer-rights': 'Alle Rechte vorbehalten.',
+                'footer-terms': 'Bedingungen',
+                'footer-privacy': 'Datenschutz',
+                'input-placeholder': 'Geben Sie hier Ihre lange URL ein...'
+            }
+        };
+
+        // 2. State & Elements
+        let currentLang = localStorage.getItem('yous_ee_lang') || 'en';
+        const langSelector = document.getElementById('lang-selector');
+        langSelector.value = currentLang;
+
+        // 3. i18n Updater Function
+        function updateLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('yous_ee_lang', lang);
+            document.documentElement.lang = lang; // Update HTML lang attr for SEO
+
+            const t = translations[lang];
+
+            // Update text nodes
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    // Quick check if it's the title tag
+                    if(el.tagName === 'TITLE') {
+                        // Strip HTML tags for the head title tag
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = t[key];
+                        document.title = tempDiv.textContent || tempDiv.innerText || "";
+                    } else {
+                        el.innerHTML = t[key]; // Changed to innerHTML to support styled spans in translations
+                    }
+                }
+            });
+
+            // Update attributes (like meta descriptions and placeholders)
+            document.querySelectorAll('[data-i18n-attr]').forEach(el => {
+                const parts = el.getAttribute('data-i18n-attr').split('|');
+                const attr = parts[0];
+                const key = parts[1];
+                if (t[key]) {
+                    el.setAttribute(attr, t[key]);
+                }
+            });
+
+            // Specific updates
+            document.getElementById('url-input').placeholder = t['input-placeholder'];
+            
+            // Reset copy button text if it was changed
+            if (document.getElementById('copy-btn').classList.contains('bg-cyber-green')) {
+                resetCopyButton();
+            }
+        }
+
+        // 4. Initialize i18n
+        updateLanguage(currentLang);
+
+        // Language Switcher Event
+        langSelector.addEventListener('change', (e) => {
+            updateLanguage(e.target.value);
+        });
+
+        // 5. Setup Year in Footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 6. Application Logic (Mock Shortening)
+        const shortenBtn = document.getElementById('shorten-btn');
+        const urlInput = document.getElementById('url-input');
+        const loadingArea = document.getElementById('loading-area');
+        const resultArea = document.getElementById('result-area');
+        const shortenedUrlEl = document.getElementById('shortened-url');
+        const copyBtn = document.getElementById('copy-btn');
+        const btnText = document.getElementById('btn-text');
+
+        function generateRandomString(length) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function resetCopyButton() {
+            copyBtn.innerHTML = `<i class="ph ph-copy"></i><span data-i18n="btn-copy">${translations[currentLang]['btn-copy']}</span>`;
+            copyBtn.classList.remove('bg-cyber-green', 'text-black');
+            copyBtn.classList.add('text-cyber-green');
+        }
+
+        shortenBtn.addEventListener('click', () => {
+            const url = urlInput.value.trim();
+            
+            // Basic URL Validation
+            if (!url) {
+                urlInput.focus();
+                urlInput.classList.add('border-red-500');
+                setTimeout(() => urlInput.classList.remove('border-red-500'), 1000);
+                return;
+            }
+
+            // Hide previous results
+            resultArea.classList.add('hidden');
+            shortenBtn.disabled = true;
+            shortenBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            // Show loading
+            loadingArea.classList.remove('hidden');
+            loadingArea.classList.add('flex');
+
+            // Simulate API Call (Timeout)
+            setTimeout(() => {
+                // Generate short URL
+                const hash = generateRandomString(6);
+                const shortUrl = `https://yous.ee/${hash}`;
+                
+                shortenedUrlEl.textContent = shortUrl;
+                shortenedUrlEl.href = shortUrl;
+
+                // Hide loading, show result
+                loadingArea.classList.add('hidden');
+                loadingArea.classList.remove('flex');
+                
+                resultArea.classList.remove('hidden');
+                
+                // Restore button
+                shortenBtn.disabled = false;
+                shortenBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                urlInput.value = '';
+                
+                resetCopyButton();
+
+            }, 1200); // 1.2s tech-delay for feeling
+        });
+
+        // 7. Clipboard Logic
+        copyBtn.addEventListener('click', async () => {
+            const textToCopy = shortenedUrlEl.textContent;
+            
+            try {
+                // Use modern Clipboard API
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(textToCopy);
+                } else {
+                    // Fallback for older browsers or non-HTTPS (iframe)
+                    let textArea = document.createElement("textarea");
+                    textArea.value = textToCopy;
+                    textArea.style.position = "fixed";
+                    textArea.style.left = "-999999px";
+                    textArea.style.top = "-999999px";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    textArea.remove();
+                }
+
+                // Update UI to show success
+                copyBtn.innerHTML = `<i class="ph-bold ph-check"></i><span data-i18n="btn-copied">${translations[currentLang]['btn-copied']}</span>`;
+                copyBtn.classList.add('bg-cyber-green', 'text-black');
+                copyBtn.classList.remove('text-cyber-green');
+                
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        });
+
+        // Enter key support for input
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                shortenBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
